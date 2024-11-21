@@ -1,4 +1,5 @@
 # Ejercicio: Fetch de Usuarios de Random User API con React y TypeScript
+https://randomuser.me/documentation#howto
 
 ## Objetivos a cubrir/practicar/aprender:
 - Practicar/Aprender a fetchear datos de una API.
