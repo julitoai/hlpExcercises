@@ -1,12 +1,42 @@
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
+import { getRandomUsers } from "./helpers/getRandomUsers";
+import UsersList from "./components/UsersList";
 
-function App() {
-  return (
-    <>
-      <h1>Mandale nomas! Usar App.tsx como componente padre</h1>
-      <p>Es un proyecto chico, solo por eso no te instalé tailwindcss (y tambien porque nunca lo usaste :D)</p>
-    </>
-  )
+export interface Users {
+  name: string;
+  surname: string;
+  picture: string;
 }
 
-export default App
+function App() {
+  const [randomUsers, setRandomUsers] = useState<Users[]>([]);
+  const [page, setPage] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const getusers = async () => {
+    setLoading(true);
+    const res = await getRandomUsers(page, 10);
+    if (!res) return setLoading(false);
+    setRandomUsers((prevState) => [...prevState, ...res]);
+    setPage((prevState) => prevState + 1);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    getusers();
+  }, []);
+
+  return (
+    <>
+      <UsersList data={randomUsers} />
+      {loading ? (
+        <p>Cargando...</p>
+      ) : (
+        <button onClick={getusers}>Cargar mas</button>
+      )}
+    </>
+  );
+}
+
+export default App;
